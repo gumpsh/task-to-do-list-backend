@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repository.TaskRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,12 @@ public class TaskService {
     }
 
     public List<Task> getTasks() {
-        return taskRepository.findAll();
+
+        List<Task> tasks = taskRepository.findAll();
+
+        tasks.sort((o1, o2) -> o1.getCreatedDate().compareTo(o2.getCreatedDate()));
+
+        return tasks;
     }
 
     public Task saveTask(Task task){
