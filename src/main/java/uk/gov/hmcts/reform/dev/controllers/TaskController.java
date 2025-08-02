@@ -28,7 +28,7 @@ public class TaskController {
 
     @PostMapping("/")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return ResponseEntity.ok().body(taskService.saveTask(task));
+        return ResponseEntity.ok().body(taskService.createTask(task));
     }
 
     @PutMapping("/{id}")
