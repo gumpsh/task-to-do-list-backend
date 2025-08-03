@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.dev.models;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
-import uk.gov.hmcts.reform.dev.config.LocalDateTimeDeserialiser;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +29,6 @@ public class Task {
     @Column(name = "STATUS")
     private String status;
 
-    @JsonDeserialize(using = LocalDateTimeDeserialiser.class)
     @Column(name = "CREATEDDATE")
     private LocalDateTime createdDate;
 }

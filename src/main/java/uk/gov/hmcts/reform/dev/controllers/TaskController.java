@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.dev.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.service.TaskService;
 
@@ -27,13 +29,13 @@ public class TaskController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return ResponseEntity.ok().body(taskService.createTask(task));
+    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskDataObject taskDataObject) {
+        return ResponseEntity.ok().body(taskService.createTask(taskDataObject));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Task> updateStatus(@PathVariable int id, @RequestParam String status) {
-        return ResponseEntity.ok().body(taskService.updateTaskStatus(id, status));
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Task> updateStatus(@PathVariable int id, @Valid @RequestBody TaskDataObject taskDataObject) {
+        return ResponseEntity.ok().body(taskService.updateTaskStatus(id, taskDataObject));
     }
 
     @PostMapping("/{id}")
