@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.service.TaskService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +27,11 @@ public class TaskController {
     @GetMapping("/")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok().body(taskService.getTasks());
+    }
+
+    @GetMapping("/search")
+    public List<Task> searchUsers(@RequestParam Map<String, Object> filters) {
+        return taskService.searchTasks(filters);
     }
 
     @PostMapping("/")

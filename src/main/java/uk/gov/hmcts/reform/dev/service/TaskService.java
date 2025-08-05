@@ -8,12 +8,10 @@ import uk.gov.hmcts.reform.dev.config.InvalidStatusException;
 import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repository.TaskRepository;
+import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,6 +33,10 @@ public class TaskService {
         tasks.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
 
         return tasks;
+    }
+
+    public List<Task> searchTasks(Map<String, Object> filters) {
+        return taskRepository.findAll(new TaskSpecification<>(filters));
     }
 
     public Task createTask(TaskDataObject taskDataObject) {
