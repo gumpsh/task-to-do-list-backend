@@ -11,6 +11,8 @@ import uk.gov.hmcts.reform.dev.repository.TaskRepository;
 import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +38,28 @@ public class TaskService {
     }
 
     public List<Task> searchTasks(Map<String, Object> filters) {
-        return taskRepository.findAll(new TaskSpecification<>(filters));
+        Map<String, Object> parsedFilters = new HashMap<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        for (Map.Entry<String, Object> entry : filters.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            if (value instanceof String) {
+                if (key.equals("startDate") || key.equals("endDate")) {
+                    try {
+                        value = LocalDateTime.parse((String) value, formatter);
+                    } catch (DateTimeParseException e) {
+                        throw new IllegalArgumentException("Invalid date format for: " + key);
+                    }
+                }
+
+                parsedFilters.put(key, value);
+            }
+        }
+
+        return taskRepository.findAll(new TaskSpecification<>(parsedFilters));
     }
 
     public Task createTask(TaskDataObject taskDataObject) {

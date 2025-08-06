@@ -6,8 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
+import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 import uk.gov.hmcts.reform.dev.service.TaskService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +35,7 @@ public class TaskController {
     }
 
     @GetMapping("/search")
-    public List<Task> searchUsers(@RequestParam Map<String, Object> filters) {
+    public List<Task> searchTasks(@RequestParam Map<String, Object> filters) {
         return taskService.searchTasks(filters);
     }
 
