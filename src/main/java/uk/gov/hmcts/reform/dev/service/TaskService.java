@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repository.TaskRepository;
 import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -22,6 +23,19 @@ import java.util.stream.Stream;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+
+    public enum Status {
+        CREATED("Created"),
+        STARTED("Started"),
+        COMPLETED("Completed"),
+        CANCELLED("Cancelled");
+
+        public final String label;
+
+        Status(String label) {
+            this.label = label;
+        }
+    }
 
     public Task getTask(int id) {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task With ID: " + id + " Not Found"));
@@ -74,19 +88,6 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public enum Status {
-        CREATED("Created"),
-        STARTED("Started"),
-        COMPLETED("Completed"),
-        CANCELLED("Cancelled");
-
-        public final String label;
-
-        private Status(String label) {
-            this.label = label;
-        }
-    }
-
     public Task saveTask(Task task){
 
         List<Status> matches = Arrays.stream(Status.values()).filter((s) -> s.label.equals(task.getStatus())).collect(Collectors.toList());
@@ -108,13 +109,14 @@ public class TaskService {
         return saveTask(task);
     }
 
-    public Boolean deleteTask(int id) {
-        Optional task = taskRepository.findById(id);
-        if (task.isPresent()) {
-            taskRepository.delete((Task) task.get());
-            return true;
-        }
+    public void deleteTask(int id) {
+        taskRepository.delete(getTask(id));
+    }
 
-        return false;
+    public List<String> fetchAllStatuses() {
+
+        List<String> statuses = Arrays.stream(Status.values()).map(v -> v.label).collect(Collectors.toList());
+
+        return statuses;
     }
 }
