@@ -29,7 +29,7 @@ public class TaskSpecification<T> implements Specification<T> {
 
         if (startDate != null && endDate != null) {
             predicates.add(criteriaBuilder.between(
-                root.get("createdDate"),
+                root.get("dueDate"),
                 startDate,
                 endDate
             ));

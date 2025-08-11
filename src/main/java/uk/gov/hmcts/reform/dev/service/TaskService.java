@@ -2,27 +2,25 @@ package uk.gov.hmcts.reform.dev.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.dev.config.EntityNotFoundException;
-import uk.gov.hmcts.reform.dev.config.ErrorHandler;
-import uk.gov.hmcts.reform.dev.config.InvalidStatusException;
+import uk.gov.hmcts.reform.dev.exception.EntityNotFoundException;
+import uk.gov.hmcts.reform.dev.exception.InvalidStatusException;
 import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.repository.TaskRepository;
 import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public enum Status {
         CREATED("Created"),
@@ -46,15 +44,13 @@ public class TaskService {
         List<Task> tasks = taskRepository.findAll();
 
         // Sort in descending created date order
-        tasks.sort((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()));
+        tasks.sort((o1, o2) -> o2.getDueDate().compareTo(o1.getDueDate()));
 
         return tasks;
     }
 
     public List<Task> searchTasks(Map<String, Object> filters) {
         Map<String, Object> parsedFilters = new HashMap<>();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
         for (Map.Entry<String, Object> entry : filters.entrySet()) {
             String key = entry.getKey();
@@ -79,11 +75,10 @@ public class TaskService {
     public Task createTask(TaskDataObject taskDataObject) {
 
         Task task = new Task();
-        task.setName(taskDataObject.getName());
         task.setTitle(taskDataObject.getTitle());
         task.setDescription(taskDataObject.getDescription());
         task.setStatus(taskDataObject.getStatus());
-        task.setCreatedDate(LocalDateTime.now());
+        task.setDueDate(taskDataObject.getDueDate());
 
         return taskRepository.save(task);
     }

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.dev.config;
+package uk.gov.hmcts.reform.dev.exception;
 
 public class EntityNotFoundException extends RuntimeException {
 

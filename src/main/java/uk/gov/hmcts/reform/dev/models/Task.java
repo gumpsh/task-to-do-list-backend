@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.dev.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +18,6 @@ public class Task {
     @SequenceGenerator(sequenceName = "hmcts-dev-test.task_id_seq", name = "TIS", allocationSize = 1)
     private int id;
 
-    @Column(name = "NAME")
-    private String name;
-
     @Column(name = "TITLE")
     private String title;
 
@@ -29,6 +27,6 @@ public class Task {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "CREATEDDATE")
-    private LocalDateTime createdDate;
+    @Column(name = "DUEDATE")
+    private LocalDateTime dueDate;
 }

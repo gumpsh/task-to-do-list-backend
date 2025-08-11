@@ -9,20 +9,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
-import uk.gov.hmcts.reform.dev.search.TaskSpecification;
 import uk.gov.hmcts.reform.dev.service.TaskService;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin()
 @RestController
@@ -91,7 +85,7 @@ public class TaskController {
     })
     @PostMapping("/create")
     public ResponseEntity<Task> createTask(@Valid @RequestBody TaskDataObject taskDataObject) {
-        return ResponseEntity.ok().body(taskService.createTask(taskDataObject));
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskDataObject));
     }
 
     @Operation(summary = "Update status", description = "Updates a task's status")
@@ -122,7 +116,7 @@ public class TaskController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable int id) {
         taskService.deleteTask(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Fetch Statuses", description = "Provide Allowed Statuses To Front End")
