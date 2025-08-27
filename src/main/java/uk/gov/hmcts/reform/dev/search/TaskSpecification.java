@@ -27,6 +27,20 @@ public class TaskSpecification<T> implements Specification<T> {
         LocalDateTime startDate = (LocalDateTime) filters.get("startDate");
         LocalDateTime endDate = (LocalDateTime) filters.get("endDate");
 
+        // Handle cases where only one date is provided
+        if (startDate != null && endDate == null) {
+            endDate = LocalDateTime.now();
+        }
+
+        if (startDate == null && endDate != null) {
+            startDate = LocalDateTime.of(1970, 1, 1, 0, 0);
+        }
+
+        // Validate date range
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("startDate cannot be after endDate");
+        }
+
         if (startDate != null && endDate != null) {
             predicates.add(criteriaBuilder.between(
                 root.get("dueDate"),

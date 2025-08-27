@@ -27,6 +27,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    // Fetch a task by ID
     @Operation(summary = "Fetch a task By id", description = "Retrieve details for a single task")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",
@@ -42,6 +43,7 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.getTask(id));
     }
 
+    // Fetch all tasks
     @Operation(summary = "Fetch all tasks", description = "Retrieve a list of all tasks")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",
@@ -57,6 +59,7 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.getTasks());
     }
 
+    // Search tasks by criteria
     @Operation(
         summary = "Fetch tasks by search criteria", description = "Returns a list of task that match the supplied criteria")
     @ApiResponses(value = {
@@ -73,6 +76,7 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.searchTasks(filters));
     }
 
+    // Create a new task
     @Operation(summary = "Create a task", description = "Creates a new task")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",
@@ -88,6 +92,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(taskDataObject));
     }
 
+    // Update a task's status
     @Operation(summary = "Update status", description = "Updates a task's status")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",
@@ -103,6 +108,7 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.updateTaskStatus(id, taskDataObject));
     }
 
+    // Delete a task
     @Operation(summary = "Deletes a task", description = "Searches for a task by id and deletes it if found")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",
@@ -119,6 +125,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    // Fetch all allowed statuses
     @Operation(summary = "Fetch Statuses", description = "Provide Allowed Statuses To Front End")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200",

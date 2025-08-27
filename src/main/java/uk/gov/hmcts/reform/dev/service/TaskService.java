@@ -43,8 +43,8 @@ public class TaskService {
 
         List<Task> tasks = taskRepository.findAll();
 
-        // Sort in descending created date order
-        tasks.sort((o1, o2) -> o2.getDueDate().compareTo(o1.getDueDate()));
+        // Sort by due date
+        tasks.sort(Comparator.comparing(Task::getDueDate));
 
         return tasks;
     }
@@ -59,6 +59,7 @@ public class TaskService {
             if (value instanceof String) {
                 if (key.equals("startDate") || key.equals("endDate")) {
                     try {
+
                         value = LocalDateTime.parse((String) value, formatter);
                     } catch (DateTimeParseException e) {
                         throw new IllegalArgumentException("Invalid date format for: " + key);
@@ -69,7 +70,12 @@ public class TaskService {
             }
         }
 
-        return taskRepository.findAll(new TaskSpecification<>(parsedFilters));
+        List<Task> tasks = taskRepository.findAll(new TaskSpecification<>(parsedFilters));
+
+        // Sort by due date
+        tasks.sort(Comparator.comparing(Task::getDueDate));
+
+        return tasks;
     }
 
     public Task createTask(TaskDataObject taskDataObject) {
@@ -77,7 +83,7 @@ public class TaskService {
         Task task = new Task();
         task.setTitle(taskDataObject.getTitle());
         task.setDescription(taskDataObject.getDescription());
-        task.setStatus(taskDataObject.getStatus());
+        task.setStatus(taskDataObject.getStatus() != null ? taskDataObject.getStatus() : Status.CREATED.label);
         task.setDueDate(taskDataObject.getDueDate());
 
         return taskRepository.save(task);
@@ -85,9 +91,9 @@ public class TaskService {
 
     public Task saveTask(Task task){
 
-        List<Status> matches = Arrays.stream(Status.values()).filter((s) -> s.label.equals(task.getStatus())).collect(Collectors.toList());
+        List<Status> matchingStatuses = Arrays.stream(Status.values()).filter((s) -> s.label.equals(task.getStatus())).collect(Collectors.toList());
 
-        if (matches.isEmpty()) {
+        if (matchingStatuses.isEmpty()) {
             throw new InvalidStatusException(task.getStatus() + " Is An Invalid Status");
         }
 
