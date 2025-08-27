@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.dev.dto.TaskDataObject;
 import uk.gov.hmcts.reform.dev.models.Task;
 import uk.gov.hmcts.reform.dev.service.TaskService;
 import java.util.List;
+import java.util.Map;
+
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.Assertions;
 
@@ -99,5 +101,24 @@ class TaskControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(statuses, response.getBody());
+    }
+
+    @Test
+    void fetchBySuppliedSearchCriteria() {
+
+        List<Task> tasks = List.of(new Task(), new Task());
+
+        Map<String, Object> filters = Map.of(
+            "startDate", "2025-01-01T00:00:00",
+            "endDate", "2025-12-31T23:59:59",
+            "status", TaskService.Status.CREATED.label
+        );
+
+        when(taskService.searchTasks(filters)).thenReturn(tasks);
+
+        ResponseEntity<List<Task>> response = taskController.searchTasks(filters);
+
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(tasks, response.getBody());
     }
 }
