@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "TASK", schema = "hmcts-dev-test")
+@Table(name = "TASK", schema = "taskTodoList-dev")
 @Getter
 @Setter
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TIS")
-    @SequenceGenerator(sequenceName = "hmcts-dev-test.task_id_seq", name = "TIS", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "taskTodoList-dev.task_id_seq", name = "TIS", allocationSize = 1)
     private int id;
 
     @Column(name = "TITLE")

@@ -30,7 +30,7 @@ spring:
     name: Dev Test
   flyway:
     locations: classpath:/db/migration
-    schemas: taskTodoList-dev-test
+    schemas: taskTodoList-dev
     baselineOnMigrate: true
     enabled: true
   datasource:
