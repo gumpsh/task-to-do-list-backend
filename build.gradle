@@ -9,7 +9,7 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.67'
 }
 
-group = 'uk.gov.hmcts.reform'
+group = 'task.todoList'
 version = '0.0.1'
 
 java {
@@ -52,8 +52,8 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: test-backend"
-    property "sonar.projectKey", "uk.gov.hmcts.reform:test-backend"
+    property "sonar.projectName", "task.todoList"
+    property "sonar.projectKey", "task.todoList"
   }
 }
 
@@ -122,10 +122,10 @@ dependencies {
 //  testImplementation 'com.github.tomakehurst:wiremock-jre8-standalone:3.0.4'
 }
 
-mainClassName = 'uk.gov.hmcts.reform.dev.Application'
+mainClassName = 'task.todoList.dev.Application'
 
 bootJar {
-  archiveFileName = "test-backend.jar"
+  archiveFileName = "taskTodoList.jar"
 
   manifest {
     attributes('Implementation-Version': project.version.toString())

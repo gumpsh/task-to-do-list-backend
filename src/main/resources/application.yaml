@@ -20,7 +20,7 @@ endpoints:
       include: info # should we have more?
 
 springdoc:
-  packagesToScan: uk.gov.hmcts.reform.dev.controllers
+  packagesToScan: task.todoList.dev.controllers
   writer-with-order-by-keys: true
 
 spring:
@@ -30,7 +30,7 @@ spring:
     name: Dev Test
   flyway:
     locations: classpath:/db/migration
-    schemas: hmcts-dev-test
+    schemas: taskTodoList-dev-test
     baselineOnMigrate: true
     enabled: true
   datasource:
