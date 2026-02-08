@@ -1,5 +1,5 @@
 # Task To-do List Backend
-This is the backend API for the new task management system required for the Developer Technical Test.
+This is the backend API to create, read, update and delete tasks for a to-do list application
 
 ## Getting Started
 This is a Spring Boot application, using Gradle as the build tool.
