@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.dev.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
